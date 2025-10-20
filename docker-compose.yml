@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  shortgen:
+    build: .
+    image: shortgen:latest
+    container_name: shortgen
+    volumes:
+      # Mount input/output directories
+      - ./videos:/app/videos
+      - ./output:/app/output
+    environment:
+      # Optional: Set Whisper model via environment variable
+      - WHISPER_MODEL=small
+    command: /app/videos --output /app/output
+
+  # Optional: GPU-enabled service (requires nvidia-docker)
+  shortgen-gpu:
+    build: .
+    image: shortgen:latest
+    container_name: shortgen-gpu
+    volumes:
+      - ./videos:/app/videos
+      - ./output:/app/output
+    environment:
+      - WHISPER_MODEL=medium
+    command: /app/videos --output /app/output --gpu
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
