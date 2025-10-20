@@ -11,6 +11,7 @@ from pathlib import Path
 from converter import convert_to_short
 from subtitles import generate_subtitles
 from overlay import burn_subtitles
+from uploader import upload_to_youtube
 from utils import setup_logging, get_video_files
 
 
@@ -70,6 +71,47 @@ def main():
         "-v", "--verbose",
         action="store_true",
         help="Enable verbose logging"
+    )
+
+    # YouTube upload options
+    parser.add_argument(
+        "--upload",
+        action="store_true",
+        help="Upload the processed video to YouTube"
+    )
+
+    parser.add_argument(
+        "--title",
+        type=str,
+        help="Video title for YouTube upload (defaults to filename)"
+    )
+
+    parser.add_argument(
+        "--description",
+        type=str,
+        default="",
+        help="Video description for YouTube upload"
+    )
+
+    parser.add_argument(
+        "--tags",
+        type=str,
+        help="Comma-separated tags for YouTube upload (e.g., 'gaming,funny,shorts')"
+    )
+
+    parser.add_argument(
+        "--privacy",
+        type=str,
+        choices=["public", "private", "unlisted"],
+        default="private",
+        help="Privacy status for YouTube upload (default: private)"
+    )
+
+    parser.add_argument(
+        "--credentials",
+        type=str,
+        default="client_secrets.json",
+        help="Path to YouTube API OAuth2 credentials file (default: client_secrets.json)"
     )
 
     args = parser.parse_args()
@@ -133,6 +175,32 @@ def main():
                 final_video = short_video
 
             logger.info(f"✓ Completed: {final_video}")
+
+            # Step 4: Upload to YouTube (if requested)
+            if args.upload:
+                logger.info("  → Uploading to YouTube...")
+
+                # Parse tags if provided
+                tags = None
+                if args.tags:
+                    tags = [tag.strip() for tag in args.tags.split(',')]
+
+                # Use custom title or default to filename
+                title = args.title if args.title else final_video.stem.replace('_', ' ').title()
+
+                video_id = upload_to_youtube(
+                    video_file=final_video,
+                    title=title,
+                    description=args.description,
+                    tags=tags,
+                    privacy_status=args.privacy,
+                    credentials_file=args.credentials
+                )
+
+                if video_id:
+                    logger.info(f"  ✓ Uploaded to YouTube: https://www.youtube.com/shorts/{video_id}")
+                else:
+                    logger.error(f"  ✗ Failed to upload to YouTube")
 
         except Exception as e:
             logger.error(f"✗ Failed to process {video_file.name}: {e}")
