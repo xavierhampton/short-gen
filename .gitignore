@@ -37,6 +37,10 @@ ENV/
 # Environment variables
 .env
 
+# YouTube API credentials (NEVER COMMIT THESE!)
+client_secrets.json
+token.pickle
+
 # Output directories
 output/
 videos/
