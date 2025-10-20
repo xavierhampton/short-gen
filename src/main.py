@@ -60,6 +60,13 @@ def main():
     )
 
     parser.add_argument(
+        "--max-words",
+        type=int,
+        default=5,
+        help="Maximum words per subtitle line (default: 5)"
+    )
+
+    parser.add_argument(
         "-v", "--verbose",
         action="store_true",
         help="Enable verbose logging"
@@ -107,7 +114,8 @@ def main():
                 srt_file = generate_subtitles(
                     short_video,
                     model=args.model,
-                    use_gpu=args.gpu
+                    use_gpu=args.gpu,
+                    max_words=args.max_words
                 )
                 logger.info(f"  ✓ Created: {srt_file.name}")
 
