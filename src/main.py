@@ -63,8 +63,15 @@ def main():
     parser.add_argument(
         "--max-words",
         type=int,
-        default=5,
-        help="Maximum words per subtitle line (default: 5)"
+        default=1,
+        help="Maximum words per subtitle line (default: 1)"
+    )
+
+    parser.add_argument(
+        "--duration",
+        type=int,
+        default=30,
+        help="Clip duration in seconds (extracts from end of video, default: 30)"
     )
 
     parser.add_argument(
@@ -145,9 +152,9 @@ def main():
         logger.info(f"Processing: {video_file.name}")
 
         try:
-            # Step 1: Convert to vertical short format
+            # Step 1: Convert to vertical short format (extracts last N seconds)
             logger.info("  → Converting to Shorts format...")
-            short_video = convert_to_short(video_file, output_dir)
+            short_video = convert_to_short(video_file, output_dir, duration=args.duration)
             logger.info(f"  ✓ Created: {short_video.name}")
 
             # Step 2: Generate subtitles (unless disabled)

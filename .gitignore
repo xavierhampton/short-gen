@@ -57,6 +57,7 @@ temp/
 
 # Whisper cache
 ~/.cache/whisper/
+whisper-cache/
 
 # OS
 .DS_Store

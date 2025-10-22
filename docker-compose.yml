@@ -12,6 +12,8 @@ services:
       # Mount YouTube credentials (if using upload feature)
       - ./client_secrets.json:/app/client_secrets.json:ro
       - ./token.pickle:/app/token.pickle
+      # Cache Whisper models to avoid re-downloading
+      - ./whisper-cache:/root/.cache/whisper
     environment:
       # Optional: Set Whisper model via environment variable
       - WHISPER_MODEL=small
@@ -28,6 +30,8 @@ services:
       # Mount YouTube credentials (if using upload feature)
       - ./client_secrets.json:/app/client_secrets.json:ro
       - ./token.pickle:/app/token.pickle
+      # Cache Whisper models to avoid re-downloading
+      - ./whisper-cache:/root/.cache/whisper
     environment:
       - WHISPER_MODEL=medium
     command: /app/videos --output /app/output --gpu

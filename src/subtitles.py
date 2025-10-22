@@ -9,7 +9,7 @@ from typing import List, Dict
 logger = logging.getLogger(__name__)
 
 
-def split_into_chunks(words: List, max_words: int = 5) -> List[Dict]:
+def split_into_chunks(words: List, max_words: int = 1) -> List[Dict]:
     """
     Split word-level timestamps into smaller chunks for snappier subtitles.
 
@@ -46,7 +46,7 @@ def split_into_chunks(words: List, max_words: int = 5) -> List[Dict]:
     return chunks
 
 
-def generate_subtitles(video_file: Path, model: str = "small", use_gpu: bool = False, max_words: int = 5) -> Path:
+def generate_subtitles(video_file: Path, model: str = "small", use_gpu: bool = False, max_words: int = 1) -> Path:
     """
     Generate .srt subtitles from video audio using Whisper.
 
