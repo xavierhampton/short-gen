@@ -38,12 +38,12 @@ def burn_subtitles(video_file: Path, srt_file: Path, output_dir: Path) -> Path:
     # - Alignment=2: Bottom center
     subtitle_style = (
     "FontName=Montserrat ExtraBold,"
-    "FontSize=24,"
-    "PrimaryColour=&HFFFFFF&,"     # Green text
+    "FontSize=30,"
+    "PrimaryColour=&HFFFFFF&,"     
     "OutlineColour=&H000000&,"     # Black border
-    "BorderStyle=1,"               # No background box
+    "BorderStyle=2,"               # No background box
     "Outline=1,"                   # Thin outline
-    "Shadow=0,"                    # No shadow
+    "Shadow=1,"                    # No shadow
     "Alignment=2,"                 # Bottom center
     "MarginV=40"                   # Padding from bottom
 )
